@@ -8,3 +8,12 @@ macro_rules! time {
         result
     }};
 }
+
+#[macro_export]
+macro_rules! measure {
+    ($block:block) => {{
+        let start = std::time::Instant::now();
+        let result = $block;
+        (result, start.elapsed())
+    }};
+}

@@ -5,3 +5,12 @@ macro_rules! cfg_print {
         println!($($arg)*);
     };
 }
+
+#[macro_export]
+macro_rules! dbg_expr {
+    ($val:expr) => {{
+        let val = $val;
+        println!("[{}:{}] {} = {:?}", file!(), line!(), stringify!($val), &val);
+        val
+    }};
+}

@@ -23,3 +23,7 @@ pub mod debug;
 #[macro_use]
 #[cfg(feature = "util")]
 pub mod util;
+
+#[macro_use]
+#[cfg(feature = "collection")]
+pub mod collection;

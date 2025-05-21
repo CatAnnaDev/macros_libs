@@ -76,41 +76,56 @@ pub fn write_log_to_file(line: &str) {
     }
 }
 
+/// Affiche un message de log avec niveau et couleur, puis le sauvegarde si activé.
 #[macro_export]
 macro_rules! log_with_level {
     ($level:expr, $color:expr, $($arg:tt)*) => {{
-        let now = chrono::Local::now();
-        let msg = format!("{} [{}] {}", now.format("%Y-%m-%d %H:%M:%S"), $level, format!($($arg)*));
-        println!("\x1b[{}m{}\x1b[0m", $color, msg);
-        write_log_to_file(&msg);
+        if $crate::should_log($level) {
+            let now = chrono::Local::now();
+            let msg = format!("{} [{}] {}", now.format("%Y-%m-%d %H:%M:%S"), $level, format!($($arg)*));
+            println!("\x1b[{}m{}\x1b[0m", $color, msg);
+            $crate::write_log_to_file(&msg);
+        }
     }};
 }
 
+/// Log INFO (bleu).
 #[macro_export]
 macro_rules! log_info {
     ($($arg:tt)*) => {
-        log_with_level!("INFO", "34", $($arg)*);
+        $crate::log_with_level!("INFO", "34", $($arg)*);
     };
 }
 
+/// Log WARN (jaune).
 #[macro_export]
 macro_rules! log_warn {
     ($($arg:tt)*) => {
-        log_with_level!("WARN", "33", $($arg)*);
+        $crate::log_with_level!("WARN", "33", $($arg)*);
     };
 }
 
+/// Log ERROR (rouge).
 #[macro_export]
 macro_rules! log_error {
     ($($arg:tt)*) => {
-        log_with_level!("ERROR", "31", $($arg)*);
+        $crate::log_with_level!("ERROR", "31", $($arg)*);
     };
 }
 
+/// Log DEBUG (gris), actif uniquement en debug.
 #[macro_export]
 macro_rules! log_debug {
     ($($arg:tt)*) => {
         #[cfg(debug_assertions)]
-        log_with_level!("DEBUG", "90", $($arg)*);
+        $crate::log_with_level!("DEBUG", "90", $($arg)*);
+    };
+}
+
+/// Log SUCCESS (vert).
+#[macro_export]
+macro_rules! log_success {
+    ($($arg:tt)*) => {
+        $crate::log_with_level!("SUCCESS", "32", $($arg)*);
     };
 }

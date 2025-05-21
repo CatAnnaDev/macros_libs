@@ -1,3 +1,4 @@
+/// Crée un `Vec<String>` à partir de littéraux.
 #[macro_export]
 macro_rules! vec_of_strings {
     ($($x:expr),*) => {{
@@ -5,6 +6,7 @@ macro_rules! vec_of_strings {
     }};
 }
 
+/// Crée une `HashMap` à partir de paires clé => valeur.
 #[macro_export]
 macro_rules! map {
     ($($k:expr => $v:expr),* $(,)?) => {{

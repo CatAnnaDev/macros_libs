@@ -6,6 +6,7 @@ macro_rules! cfg_print {
     };
 }
 
+/// Debug express d’une expression avec position.
 #[macro_export]
 macro_rules! dbg_expr {
     ($val:expr) => {{

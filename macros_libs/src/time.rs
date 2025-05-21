@@ -1,14 +1,16 @@
+/// Mesure le temps d’un bloc et affiche la durée avec description.
 #[macro_export]
-macro_rules! time {
-    ($label:expr, $block:block) => {{
-        let now = Instant::now();
+macro_rules! time_it {
+    ($desc:expr, $block:block) => {{
+        let start = std::time::Instant::now();
         let result = $block;
-        let elapsed = now.elapsed();
-        $crate::log_info!("{} took {:?}", $label, elapsed);
+        let duration = start.elapsed();
+        println!("{} took: {:?}", $desc, duration);
         result
     }};
 }
 
+/// Mesure le temps d’un bloc et retourne `(résultat, durée)`.
 #[macro_export]
 macro_rules! measure {
     ($block:block) => {{

@@ -1,4 +1,5 @@
 use std::fs::OpenOptions;
+use std::fmt::Display;
 use std::io::{Seek, SeekFrom, Write};
 use std::sync::OnceLock;
 use std::sync::atomic::{AtomicBool, Ordering};
@@ -14,6 +15,18 @@ pub enum Level{
     Warn,
     Error,
     Success,
+}
+
+impl Display for Level{
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        match self {
+            Level::Debug => write!(f, "Debug"),
+            Level::Info => write!(f, "Info"),
+            Level::Warn => write!(f, "Warn"),
+            Level::Error => write!(f, "Error"),
+            Level::Success => write!(f, "Success"),
+        }
+    }
 }
 
 #[allow(dead_code)]
@@ -44,7 +57,7 @@ fn level_priority(level: &Level) -> usize {
 
 #[doc(hidden)]
 #[allow(dead_code)]
-fn should_log(level: &Level) -> bool {
+pub fn should_log(level: &Level) -> bool {
     if let Some(filter) = LOG_LEVEL_FILTER.get() {
         level_priority(level) >= level_priority(filter)
     } else {
@@ -80,11 +93,11 @@ pub fn write_log_to_file(line: &str) {
 #[macro_export]
 macro_rules! log_with_level {
     ($level:expr, $color:expr, $($arg:tt)*) => {{
-        if $crate::should_log($level) {
+        if should_log($level) {
             let now = chrono::Local::now();
             let msg = format!("{} [{}] {}", now.format("%Y-%m-%d %H:%M:%S"), $level, format!($($arg)*));
             println!("\x1b[{}m{}\x1b[0m", $color, msg);
-            $crate::write_log_to_file(&msg);
+            write_log_to_file(&msg);
         }
     }};
 }
@@ -93,7 +106,7 @@ macro_rules! log_with_level {
 #[macro_export]
 macro_rules! log_info {
     ($($arg:tt)*) => {
-        $crate::log_with_level!("INFO", "34", $($arg)*);
+        log_with_level!(&Level::Info, "34", $($arg)*);
     };
 }
 
@@ -101,7 +114,7 @@ macro_rules! log_info {
 #[macro_export]
 macro_rules! log_warn {
     ($($arg:tt)*) => {
-        $crate::log_with_level!("WARN", "33", $($arg)*);
+        log_with_level!(&Level::Warn, "33", $($arg)*);
     };
 }
 
@@ -109,7 +122,7 @@ macro_rules! log_warn {
 #[macro_export]
 macro_rules! log_error {
     ($($arg:tt)*) => {
-        $crate::log_with_level!("ERROR", "31", $($arg)*);
+        log_with_level!(&Level::Error, "31", $($arg)*);
     };
 }
 
@@ -118,7 +131,7 @@ macro_rules! log_error {
 macro_rules! log_debug {
     ($($arg:tt)*) => {
         #[cfg(debug_assertions)]
-        $crate::log_with_level!("DEBUG", "90", $($arg)*);
+        log_with_level!(&Level::Debug, "90", $($arg)*);
     };
 }
 
@@ -126,6 +139,6 @@ macro_rules! log_debug {
 #[macro_export]
 macro_rules! log_success {
     ($($arg:tt)*) => {
-        $crate::log_with_level!("SUCCESS", "32", $($arg)*);
+        log_with_level!(&Level::Success, "32", $($arg)*);
     };
 }

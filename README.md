@@ -88,13 +88,13 @@ Ajoute cette dépendance dans ton `Cargo.toml` :
 
 ```toml
 [dependencies]
-rust-utils-macros = { path = "./chemin/vers/ta/lib" }
+macros_libs = { path = "../macros_libs" }
 ```
 
 Et dans ton code :
 
 ```rust
-use rust_utils_macros::*;
+use macros_libs::*;
 ```
 
 ---
@@ -105,7 +105,7 @@ use rust_utils_macros::*;
 fn main() {
     enable_log_saving("app.log");
     set_max_log_file_size(100_000);
-    set_log_level_filter("INFO");
+    set_log_level_filter(Level::Info);
 
     log_info!("Application démarrée");
 
@@ -116,13 +116,13 @@ fn main() {
         log_info!("n = {}", n);
     });
 
-    let tentative = retry!(5, 1000, || -> Result<(), &str> {
-        Err("échec temporaire")
+    let value = retry!(1, 200, {
+        might_fail()
     });
 
     dbg_expr!(tentative);
 
-    let (res, dur) = measure!({
+    let (resultat, duration) = measure!({
         (0..1000000).sum::<u64>()
     });
     println!("Résultat = {}, durée = {:?}", res, dur);

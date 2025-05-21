@@ -27,3 +27,7 @@ pub mod util;
 #[macro_use]
 #[cfg(feature = "collection")]
 pub mod collection;
+
+#[macro_use]
+#[cfg(feature = "assert")]
+mod assert;

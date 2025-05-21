@@ -12,7 +12,8 @@ time = []
 debug = []
 util = []
 collection = []
-all = ["control", "loggings", "env", "time", "debug", "util", "collection", ]
+assert = []
+all = ["control", "loggings", "env", "time", "debug", "util", "collection", "assert", ]
 
 [dependencies]
 serde_json = "1.0.140"

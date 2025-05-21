@@ -1,0 +1,18 @@
+[package]
+name = "macros_libs"
+version = "0.1.0"
+edition = "2024"
+
+[features]
+default = ["loggings"]
+control = []
+loggings = []
+env = []
+time = []
+debug = []
+util = []
+all = ["control", "loggings", "env", "time", "debug", "util", ]
+
+[dependencies]
+serde_json = "1.0.140"
+chrono = "0.4.41"

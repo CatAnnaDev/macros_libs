@@ -30,4 +30,8 @@ pub mod collection;
 
 #[macro_use]
 #[cfg(feature = "assert")]
-mod assert;
+pub mod assert;
+
+#[macro_use]
+#[cfg(feature = "formats")]
+pub mod formats;

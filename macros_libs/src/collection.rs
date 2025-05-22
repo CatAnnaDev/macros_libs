@@ -15,3 +15,26 @@ macro_rules! map {
         m
     }};
 }
+
+#[macro_export]
+macro_rules! zip_vecs {
+    ($a:expr, $b:expr) => {{
+        $a.into_iter().zip($b).collect::<Vec<_>>()
+    }};
+}
+
+#[macro_export]
+macro_rules! chunk_vec {
+    ($vec:expr, $size:expr) => {{
+        $vec.chunks($size).map(|c| c.to_vec()).collect::<Vec<_>>()
+    }};
+}
+
+#[macro_export]
+macro_rules! dedup_vec {
+    ($vec:expr) => {{
+        use std::collections::HashSet;
+        let mut seen = HashSet::new();
+        $vec.into_iter().filter(|x| seen.insert(x.clone())).collect::<Vec<_>>()
+    }};
+}

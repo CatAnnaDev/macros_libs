@@ -13,7 +13,7 @@ macro_rules! retry {
                     Ok(val) => {
                         result = Some(Ok(val));
                         break;
-                    },
+                    }
                     Err(err) => {
                         last_err = Some(err);
                         sleep(Duration::from_millis($delay_ms));
@@ -26,6 +26,15 @@ macro_rules! retry {
     }};
 }
 
+#[macro_export]
+macro_rules! match_result {
+    ($res:expr, Ok($ok:ident) => $ok_block:block, Err($err:ident) => $err_block:block) => {
+        match $res {
+            Ok($ok) => $ok_block,
+            Err($err) => $err_block,
+        }
+    };
+}
 
 #[macro_export]
 macro_rules! exit_if_err {
@@ -51,4 +60,72 @@ macro_rules! unwrap_or_exit {
             }
         }
     }};
+}
+
+#[macro_export]
+macro_rules! loop_until {
+    ($cond:expr, $body:block) => {{
+        while !$cond {
+            $body
+        }
+    }};
+}
+
+#[macro_export]
+macro_rules! try_or_continue {
+    ($expr:expr) => {
+        match $expr {
+            Ok(val) => val,
+            Err(_) => continue,
+        }
+    };
+}
+
+#[macro_export]
+macro_rules! try_or_return {
+    ($expr:expr) => {
+        match $expr {
+            Ok(val) => val,
+            Err(e) => return Err(e.into()),
+        }
+    };
+}
+
+#[macro_export]
+macro_rules! match_some {
+    ($opt:expr, $var:ident => $some_block:block, $else_block:block) => {
+        match $opt {
+            Some($var) => $some_block,
+            None => $else_block,
+        }
+    };
+}
+
+#[macro_export]
+macro_rules! match_ok {
+    ($res:expr, $var:ident => $ok_block:block, $else_block:block) => {
+        match $res {
+            Ok($var) => $ok_block,
+            Err(_) => $else_block,
+        }
+    };
+}
+
+#[macro_export]
+macro_rules! if_some {
+    ($opt:expr, $var:ident => $block:block) => {
+        if let Some($var) = $opt {
+            $block
+        }
+    };
+}
+
+#[macro_export]
+macro_rules! unwrap_or_return {
+    ($opt:expr) => {
+        match $opt {
+            Some(val) => val,
+            None => return,
+        }
+    };
 }

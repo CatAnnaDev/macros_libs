@@ -26,6 +26,11 @@ macro_rules! for_each {
     ([$($item:expr),*], $var:ident => $body:block) => {{
         $(let $var = $item; $body)*
     }};
+    ($collection:expr, $var:ident => $body:block) => {{
+        for $var in $collection {
+            $body
+        }
+    }};
 }
 
 /// Sérialise une valeur en JSON (joli format).
@@ -64,5 +69,29 @@ macro_rules! from_json {
 macro_rules! chain {
     ($val:expr => $($func:ident)::*) => {{
         $val$(.$func())*
+    }};
+}
+
+/// Applique un effet secondaire sans casser la chaîne
+///
+/// # Exemple
+/// ```
+/// let result = tap!(some_function(), |res| println!("résultat = {:?}", res));
+/// ```
+#[macro_export]
+macro_rules! tap {
+    ($val:expr, $side_effect:expr) => {{
+        let tmp = $val;
+        $side_effect(&tmp);
+        tmp
+    }};
+}
+
+/// Exécute un bloc une seule fois à l’appel du programme (thread-safe)
+#[macro_export]
+macro_rules! once {
+    ($block:block) => {{
+        static ONCE: std::sync::Once = std::sync::Once::new();
+        ONCE.call_once(|| $block);
     }};
 }

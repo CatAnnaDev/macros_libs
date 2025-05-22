@@ -108,9 +108,9 @@ macro_rules! template {
 /// ];
 /// println!("{}", format_table!(*table));
 /// /*
-/// Nom    Age  Ville  
-/// Alice  30   Paris  
-/// Bob    25   Lyon   
+/// Nom    Age  Ville
+/// Alice  30   Paris
+/// Bob    25   Lyon
 /// */
 /// ```
 #[macro_export]
@@ -154,7 +154,10 @@ macro_rules! format_table {
 /// println!("{}", format_table_ascii!(*table));
 /// /*
 /// +----+-------+-------+
+/// | ID | Nom   | Score |
+/// +----+-------+-------+
 /// | 1  | Alice | 90    |
+/// +----+-------+-------+
 /// | 2  | Bob   | 85    |
 /// +----+-------+-------+
 /// */
@@ -256,8 +259,8 @@ macro_rules! format_table_md {
 /// let items = vec!["apple", "banana", "pear", "grape"];
 /// println!("{}", columnize!(items, 2));
 /// /*
-/// apple   banana  
-/// pear    grape   
+/// apple   banana
+/// pear    grape
 /// */
 /// ```
 #[macro_export]
@@ -296,9 +299,9 @@ macro_rules! columnize {
 /// let align = &["left", "right", "left"];
 /// println!("{}", format_align_table!(*table, align));
 /// /*
-/// Nom    30  Paris  
-/// Alice  30  Paris  
-/// Bob    25  Lyon   
+/// Nom    Age  Ville
+/// Alice  30  Paris
+/// Bob    25  Lyon
 /// */
 /// ```
 #[macro_export]

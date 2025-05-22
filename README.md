@@ -77,7 +77,7 @@
 ```rust
 enable_log_saving("log.txt");
 set_max_log_file_size(1024 * 1024); // 1 Mo
-set_log_level_filter("INFO"); // Peut être "DEBUG", "WARN", etc.
+set_log_level_filter(Level::Info); // Peut être "DEBUG", "WARN", etc.
 ```
 
 ---

@@ -106,7 +106,7 @@ macro_rules! template {
 ///     &["Alice", "30", "Paris"],
 ///     &["Bob", "25", "Lyon"],
 /// ];
-/// println!("{}", format_table!(table));
+/// println!("{}", format_table!(*table));
 /// /*
 /// Nom    Age  Ville  
 /// Alice  30   Paris  
@@ -151,7 +151,7 @@ macro_rules! format_table {
 ///     &["1", "Alice", "90"],
 ///     &["2", "Bob", "85"],
 /// ];
-/// println!("{}", format_table_ascii!(table));
+/// println!("{}", format_table_ascii!(*table));
 /// /*
 /// +----+-------+-------+
 /// | 1  | Alice | 90    |
@@ -204,7 +204,7 @@ macro_rules! format_table_ascii {
 ///     &["Alice", "30"],
 ///     &["Bob", "25"],
 /// ];
-/// println!("{}", format_table_md!(table));
+/// println!("{}", format_table_md!(*table));
 /// /*
 /// | Nom   | Age |
 /// | ----- | --- |
@@ -294,7 +294,7 @@ macro_rules! columnize {
 ///     &["Bob", "25", "Lyon"],
 /// ];
 /// let align = &["left", "right", "left"];
-/// println!("{}", format_align_table!(table, align));
+/// println!("{}", format_align_table!(*table, align));
 /// /*
 /// Nom    30  Paris  
 /// Alice  30  Paris  
